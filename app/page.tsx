@@ -36,6 +36,14 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="mb-6 max-w-md mx-auto">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+            <p className="text-blue-800 text-sm font-medium">
+              Please tap your keycard before entering your unit number and name
+            </p>
+          </div>
+        </div>
+
         <AccessLogForm />
 
         <footer className="mt-8 text-center text-sm text-gray-500">
