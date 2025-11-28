@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (hasExceededLimit(clientIp)) {
       const response: ApiResponse = {
         success: false,
-        message: '이미 3회 제출하셨습니다. 관리자에게 직접 연락해 주세요.',
+        message: '이미 20회 제출하셨습니다. 관리자에게 직접 연락해 주세요.',
       };
       return NextResponse.json(response, { status: 429 });
     }

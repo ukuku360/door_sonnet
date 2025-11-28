@@ -1,7 +1,7 @@
 import { LRUCache } from 'lru-cache';
 
 // Rate limit configuration
-const SUBMISSION_LIMIT = 3;
+const SUBMISSION_LIMIT = 20;
 const CACHE_MAX_SIZE = 500;
 const CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
 
