@@ -85,6 +85,7 @@ export async function GET(request: NextRequest) {
             color: #6b7280;
           }
           .download-btn {
+            display: inline-block;
             background: #2563eb;
             color: white;
             border: none;
@@ -94,6 +95,7 @@ export async function GET(request: NextRequest) {
             font-size: 14px;
             font-weight: 500;
             margin-left: 24px;
+            text-decoration: none;
           }
           .download-btn:hover {
             background: #1d4ed8;
@@ -121,7 +123,7 @@ export async function GET(request: NextRequest) {
               <span class="stats-label">총 신고 건수:</span>
               <span>${submissions.length}건</span>
             </div>
-            <button class="download-btn" onclick="downloadCSV()">CSV 다운로드</button>
+            <a href="/api/data/csv" class="download-btn">CSV 다운로드</a>
           </div>
 
           <div class="table-container">
@@ -154,30 +156,6 @@ export async function GET(request: NextRequest) {
           </div>
         </div>
 
-        <script>
-          function downloadCSV() {
-            const data = ${JSON.stringify(submissions)};
-
-            // Create CSV content
-            let csv = '제출 시간,유닛 넘버,이름\\n';
-            data.forEach(entry => {
-              csv += \`"\${entry.timestamp}","\${entry.unitNumber}","\${entry.firstName}"\\n\`;
-            });
-
-            // Create blob and download
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-
-            link.setAttribute('href', url);
-            link.setAttribute('download', \`door-access-log-\${new Date().toISOString().split('T')[0]}.csv\`);
-            link.style.visibility = 'hidden';
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
-        </script>
       </body>
       </html>
     `;
