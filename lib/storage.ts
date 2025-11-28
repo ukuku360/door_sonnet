@@ -7,10 +7,22 @@ const TIMEZONE = 'Asia/Seoul';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'submissions.json');
 
+// In-memory storage for Vercel (since filesystem is read-only)
+let memoryStorage: TimestampedEntry[] = [];
+
 /**
- * Ensure data directory exists
+ * Check if running in Vercel environment
+ */
+function isVercel(): boolean {
+  return process.env.VERCEL === '1';
+}
+
+/**
+ * Ensure data directory exists (only for local)
  */
 async function ensureDataDir() {
+  if (isVercel()) return;
+
   try {
     await fs.access(DATA_DIR);
   } catch {
@@ -19,9 +31,15 @@ async function ensureDataDir() {
 }
 
 /**
- * Read all submissions from file
+ * Read all submissions from file or memory
  */
 async function readSubmissions(): Promise<TimestampedEntry[]> {
+  // Use memory storage in Vercel
+  if (isVercel()) {
+    return memoryStorage;
+  }
+
+  // Use file storage locally
   try {
     await ensureDataDir();
     const data = await fs.readFile(DATA_FILE, 'utf-8');
@@ -33,9 +51,16 @@ async function readSubmissions(): Promise<TimestampedEntry[]> {
 }
 
 /**
- * Write submissions to file
+ * Write submissions to file or memory
  */
 async function writeSubmissions(submissions: TimestampedEntry[]): Promise<void> {
+  // Use memory storage in Vercel
+  if (isVercel()) {
+    memoryStorage = submissions;
+    return;
+  }
+
+  // Use file storage locally
   await ensureDataDir();
   await fs.writeFile(DATA_FILE, JSON.stringify(submissions, null, 2), 'utf-8');
 }
