@@ -7,7 +7,7 @@ import LoadingSpinner from './LoadingSpinner';
 import type { FormErrors } from '@/lib/types';
 
 const STORAGE_KEY = 'door_log_submissions';
-const MAX_SUBMISSIONS = 3;
+const MAX_SUBMISSIONS = 20;
 
 export default function AccessLogForm() {
   const router = useRouter();
@@ -33,18 +33,18 @@ export default function AccessLogForm() {
     // Validate unit number
     const unitNum = parseInt(unitNumber);
     if (!unitNumber) {
-      newErrors.unitNumber = '유닛 넘버를 입력해 주세요';
+      newErrors.unitNumber = 'Please enter your unit number';
     } else if (isNaN(unitNum)) {
-      newErrors.unitNumber = '유닛 넘버는 숫자만 입력 가능합니다';
+      newErrors.unitNumber = 'Unit number must be numeric';
     } else if (unitNum < 1 || unitNum > 9999) {
-      newErrors.unitNumber = '유닛 넘버는 1-9999 범위 내여야 합니다';
+      newErrors.unitNumber = 'Unit number must be between 1-9999';
     }
 
     // Validate first name
     if (!firstName.trim()) {
-      newErrors.firstName = '이름을 입력해 주세요';
+      newErrors.firstName = 'Please enter your name';
     } else if (firstName.trim().length > 50) {
-      newErrors.firstName = '이름은 50자 이내로 입력해 주세요';
+      newErrors.firstName = 'Name must be 50 characters or less';
     }
 
     setErrors(newErrors);
@@ -57,7 +57,7 @@ export default function AccessLogForm() {
 
     // Check submission limit
     if (submissionCount >= MAX_SUBMISSIONS) {
-      setGeneralError('이미 3회 제출하셨습니다. 관리자에게 직접 연락해 주세요.');
+      setGeneralError('You have reached the submission limit. Please contact management directly.');
       return;
     }
 
@@ -92,20 +92,20 @@ export default function AccessLogForm() {
         router.push('/success');
       } else {
         if (response.status === 429) {
-          setGeneralError(data.message || '이미 3회 제출하셨습니다. 관리자에게 직접 연락해 주세요.');
+          setGeneralError(data.message || 'You have reached the submission limit. Please contact management directly.');
           // Update local count
           const newCount = MAX_SUBMISSIONS;
           localStorage.setItem(STORAGE_KEY, newCount.toString());
           setSubmissionCount(newCount);
         } else if (response.status === 400) {
-          setGeneralError(data.message || '입력한 정보를 확인해 주세요.');
+          setGeneralError(data.message || 'Please check the information you entered.');
         } else {
-          setGeneralError(data.message || '제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+          setGeneralError(data.message || 'An error occurred during submission. Please try again.');
         }
       }
     } catch (error) {
       console.error('Submission error:', error);
-      setGeneralError('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
+      setGeneralError('A network error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -116,25 +116,25 @@ export default function AccessLogForm() {
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
       <FormInput
-        label="유닛 넘버"
+        label="Unit Number"
         name="unitNumber"
         type="number"
         value={unitNumber}
         onChange={(e) => setUnitNumber(e.target.value)}
         error={errors.unitNumber}
         required
-        placeholder="예: 101"
+        placeholder="e.g. 101"
       />
 
       <FormInput
-        label="이름"
+        label="Name"
         name="firstName"
         type="text"
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
         error={errors.firstName}
         required
-        placeholder="예: 홍길동"
+        placeholder="e.g. John"
       />
 
       {generalError && (
@@ -145,13 +145,13 @@ export default function AccessLogForm() {
 
       {isLimitReached ? (
         <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
-          제출 한도에 도달했습니다. 추가 지원이 필요하시면 관리자에게 직접 연락해 주세요.
+          You have reached the submission limit. Please contact management directly for further assistance.
         </div>
       ) : (
         <>
           {submissionCount > 0 && (
             <div className="mb-4 text-sm text-gray-600">
-              {submissionCount}/{MAX_SUBMISSIONS}회 제출 완료
+              {submissionCount}/{MAX_SUBMISSIONS} submissions completed
             </div>
           )}
 
@@ -167,13 +167,13 @@ export default function AccessLogForm() {
               }
             `}
           >
-            {isSubmitting ? <LoadingSpinner /> : '제출하기'}
+            {isSubmitting ? <LoadingSpinner /> : 'Submit'}
           </button>
         </>
       )}
 
       <p className="mt-4 text-sm text-gray-500 text-center">
-        * 필수 항목
+        * Required fields
       </p>
     </form>
   );

@@ -24,26 +24,26 @@ export default function SuccessPage() {
           </div>
 
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            제출 완료!
+            Submission Complete!
           </h1>
 
           <p className="text-gray-700 mb-2">
-            정보가 성공적으로 제출되었습니다.
+            Your information has been submitted successfully.
           </p>
 
           <p className="text-gray-700 mb-6">
-            관리자가 확인 후 빠르게 조치하겠습니다.
+            Management will review and take action promptly.
           </p>
 
           <p className="text-gray-600 text-sm mb-8">
-            감사합니다.
+            Thank you.
           </p>
 
           <Link
             href="/"
             className="inline-block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
           >
-            다른 정보 제출하기
+            Submit Another Entry
           </Link>
         </div>
       </div>
