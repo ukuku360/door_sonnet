@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --roomingkos-primary: #C33C3C;
+  --roomingkos-dark: #9A2E2E;
+  --roomingkos-light: #fef2f2;
+}
+
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Subtle pattern background */
+.bg-pattern {
+  background-color: #fef7f7;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(195, 60, 60, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(195, 60, 60, 0.03) 0%, transparent 50%);
+}
+
+/* Input focus ring */
+input:focus {
+  outline: none;
+  border-color: var(--roomingkos-primary) !important;
+  box-shadow: 0 0 0 3px rgba(195, 60, 60, 0.1);
+}
+
+/* Number input spinner hide */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

@@ -114,7 +114,7 @@ export default function AccessLogForm() {
   const isLimitReached = submissionCount >= MAX_SUBMISSIONS;
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100">
       <FormInput
         label="Unit Number"
         name="unitNumber"
@@ -144,7 +144,7 @@ export default function AccessLogForm() {
       )}
 
       {isLimitReached ? (
-        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm">
           You have reached the submission limit. Please contact management directly for further assistance.
         </div>
       ) : (
@@ -159,11 +159,11 @@ export default function AccessLogForm() {
             type="submit"
             disabled={isSubmitting}
             className={`
-              w-full py-3 px-4 rounded-lg font-medium text-white
-              transition-colors duration-200
+              w-full py-3 px-4 rounded-lg font-semibold text-white
+              transition-all duration-200 shadow-md
               ${isSubmitting
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+                : 'bg-roomingkos-500 hover:bg-roomingkos-600 active:bg-roomingkos-700 hover:shadow-lg'
               }
             `}
           >

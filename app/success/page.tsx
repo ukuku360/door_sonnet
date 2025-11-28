@@ -4,7 +4,17 @@ export default function SuccessPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+        <div className="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-100">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <div className="bg-roomingkos-500 px-4 py-2 rounded-lg">
+              <span className="text-white text-lg font-bold tracking-wide">
+                <span className="opacity-70 font-normal text-sm mr-0.5">S</span>
+                RoomingKos
+              </span>
+            </div>
+          </div>
+
           <div className="mb-6">
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
               <svg
@@ -41,10 +51,12 @@ export default function SuccessPage() {
 
           <Link
             href="/"
-            className="inline-block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+            className="inline-block w-full py-3 px-4 bg-roomingkos-500 hover:bg-roomingkos-600 active:bg-roomingkos-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
           >
             Submit Another Entry
           </Link>
+
+          <p className="mt-6 text-roomingkos-500 font-medium text-sm">© RoomingKos</p>
         </div>
       </div>
     </main>
