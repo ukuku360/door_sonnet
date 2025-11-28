@@ -5,7 +5,7 @@ import { formatInTimeZone } from 'date-fns-tz';
 const TIMEZONE = 'Asia/Seoul';
 
 /**
- * GET /api/data/csv - CSV 파일 직접 다운로드
+ * GET /api/data/csv - Download CSV file directly
  */
 export async function GET() {
   try {
@@ -14,16 +14,16 @@ export async function GET() {
     // BOM for Excel UTF-8 compatibility
     const BOM = '\uFEFF';
 
-    // CSV 헤더
-    let csv = BOM + '번호,제출 시간,유닛 넘버,이름\n';
+    // CSV header
+    let csv = BOM + 'No,Submitted At,Unit Number,Name\n';
 
-    // CSV 데이터 (최신순)
+    // CSV data (newest first)
     submissions.reverse().forEach((entry, index) => {
       const escapedName = entry.firstName.replace(/"/g, '""');
       csv += `${index + 1},"${entry.timestamp}","${entry.unitNumber}","${escapedName}"\n`;
     });
 
-    // 파일명에 현재 날짜 포함
+    // Include current date in filename
     const dateStr = formatInTimeZone(new Date(), TIMEZONE, 'yyyy-MM-dd_HHmmss');
     const filename = `door-access-log_${dateStr}.csv`;
 

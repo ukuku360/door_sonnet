@@ -12,101 +12,153 @@ export async function GET(request: NextRequest) {
     // Create HTML page
     const html = `
       <!DOCTYPE html>
-      <html lang="ko">
+      <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>도어 접근 문제 신고 내역</title>
+        <title>Door Access Issue Reports - RoomingKos</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background-color: #f9fafb;
-            padding: 20px;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #fef7f7;
+            background-image: 
+              radial-gradient(circle at 25% 25%, rgba(195, 60, 60, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, rgba(195, 60, 60, 0.03) 0%, transparent 50%);
+            padding: 24px;
+            min-height: 100vh;
           }
           .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(195, 60, 60, 0.08);
             overflow: hidden;
+            border: 1px solid #fecaca;
           }
           .header {
-            background: #2563eb;
+            background: linear-gradient(135deg, #C33C3C 0%, #9A2E2E 100%);
             color: white;
-            padding: 24px;
+            padding: 28px 32px;
+          }
+          .logo {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
           }
           .header h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+          }
+          .header p {
+            opacity: 0.9;
+            font-size: 14px;
           }
           .stats {
-            background: #eff6ff;
-            padding: 16px 24px;
-            border-bottom: 1px solid #dbeafe;
+            background: #fef2f2;
+            padding: 16px 32px;
+            border-bottom: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
           }
           .stats-item {
-            display: inline-block;
-            margin-right: 24px;
-            color: #1e40af;
+            color: #9A2E2E;
+            font-weight: 500;
           }
           .stats-label {
-            font-weight: bold;
-            margin-right: 8px;
+            font-weight: 600;
+            margin-right: 6px;
+          }
+          .stats-value {
+            background: #C33C3C;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 14px;
           }
           .table-container {
             overflow-x: auto;
-            padding: 24px;
+            padding: 24px 32px;
           }
           table {
             width: 100%;
             border-collapse: collapse;
           }
           th {
-            background: #f3f4f6;
-            padding: 12px;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            padding: 14px 16px;
             text-align: left;
             font-weight: 600;
-            color: #374151;
-            border-bottom: 2px solid #e5e7eb;
+            color: #9A2E2E;
+            border-bottom: 2px solid #fecaca;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
           }
           td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #1f2937;
+            padding: 14px 16px;
+            border-bottom: 1px solid #fee2e2;
+            color: #374151;
+            font-size: 14px;
           }
           tr:hover {
-            background: #f9fafb;
+            background: #fef7f7;
+          }
+          tr:last-child td {
+            border-bottom: none;
           }
           .empty {
             text-align: center;
-            padding: 48px 24px;
-            color: #6b7280;
+            padding: 64px 24px;
+            color: #9A2E2E;
+          }
+          .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
           }
           .download-btn {
-            display: inline-block;
-            background: #2563eb;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #C33C3C 0%, #9A2E2E 100%);
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            margin-left: 24px;
             text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(195, 60, 60, 0.25);
           }
           .download-btn:hover {
-            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(195, 60, 60, 0.35);
+          }
+          .download-btn svg {
+            width: 16px;
+            height: 16px;
           }
           @media (max-width: 768px) {
-            .table-container {
-              padding: 12px;
-            }
+            body { padding: 16px; }
+            .header { padding: 20px; }
+            .stats { padding: 12px 20px; }
+            .table-container { padding: 16px; }
             th, td {
-              padding: 8px;
-              font-size: 14px;
+              padding: 10px 12px;
+              font-size: 13px;
             }
           }
         </style>
@@ -114,31 +166,38 @@ export async function GET(request: NextRequest) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>도어 접근 문제 신고 내역</h1>
-            <p>기숙사 키카드 접근 문제 제출 기록</p>
+            <div class="logo">RoomingKos</div>
+            <h1>Door Access Issue Reports</h1>
+            <p>Keycard access issue submission log</p>
           </div>
 
           <div class="stats">
             <div class="stats-item">
-              <span class="stats-label">총 신고 건수:</span>
-              <span>${submissions.length}건</span>
+              <span class="stats-label">Total Reports:</span>
+              <span class="stats-value">${submissions.length}</span>
             </div>
-            <a href="/api/data/csv" class="download-btn">CSV 다운로드</a>
+            <a href="/api/data/csv" class="download-btn">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download CSV
+            </a>
           </div>
 
           <div class="table-container">
             ${submissions.length === 0 ? `
               <div class="empty">
-                <p>아직 제출된 데이터가 없습니다.</p>
+                <div class="empty-icon">📋</div>
+                <p>No submissions yet.</p>
               </div>
             ` : `
               <table>
                 <thead>
                   <tr>
-                    <th>번호</th>
-                    <th>제출 시간</th>
-                    <th>유닛 넘버</th>
-                    <th>이름</th>
+                    <th>#</th>
+                    <th>Submitted At</th>
+                    <th>Unit Number</th>
+                    <th>Name</th>
                   </tr>
                 </thead>
                 <tbody>
