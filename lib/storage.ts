@@ -1,3 +1,4 @@
+import { kv } from '@vercel/kv';
 import fs from 'fs/promises';
 import path from 'path';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -6,9 +7,7 @@ import type { TimestampedEntry } from './types';
 const TIMEZONE = 'Asia/Seoul';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'submissions.json');
-
-// In-memory storage for Vercel (since filesystem is read-only)
-let memoryStorage: TimestampedEntry[] = [];
+const KV_KEY = 'door_submissions';
 
 /**
  * Check if running in Vercel environment
@@ -31,12 +30,18 @@ async function ensureDataDir() {
 }
 
 /**
- * Read all submissions from file or memory
+ * Read all submissions from KV store or file
  */
 async function readSubmissions(): Promise<TimestampedEntry[]> {
-  // Use memory storage in Vercel
+  // Use Vercel KV in production
   if (isVercel()) {
-    return memoryStorage;
+    try {
+      const data = await kv.get<TimestampedEntry[]>(KV_KEY);
+      return data || [];
+    } catch (error) {
+      console.error('KV read error:', error);
+      return [];
+    }
   }
 
   // Use file storage locally
@@ -51,12 +56,12 @@ async function readSubmissions(): Promise<TimestampedEntry[]> {
 }
 
 /**
- * Write submissions to file or memory
+ * Write submissions to KV store or file
  */
 async function writeSubmissions(submissions: TimestampedEntry[]): Promise<void> {
-  // Use memory storage in Vercel
+  // Use Vercel KV in production
   if (isVercel()) {
-    memoryStorage = submissions;
+    await kv.set(KV_KEY, submissions);
     return;
   }
 
@@ -85,7 +90,7 @@ export async function addSubmission(entry: { unitNumber: number; firstName: stri
   // Add new submission
   submissions.push(newEntry);
 
-  // Write back to file
+  // Write back to storage
   await writeSubmissions(submissions);
 }
 
