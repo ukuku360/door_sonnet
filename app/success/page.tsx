@@ -9,7 +9,6 @@ export default function SuccessPage() {
           <div className="flex justify-center mb-6">
             <div className="bg-roomingkos-500 px-4 py-2 rounded-lg">
               <span className="text-white text-lg font-bold tracking-wide">
-                <span className="opacity-70 font-normal text-sm mr-0.5">S</span>
                 RoomingKos
               </span>
             </div>

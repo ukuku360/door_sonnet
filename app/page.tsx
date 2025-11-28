@@ -9,7 +9,6 @@ export default function Home() {
           <div className="flex justify-center mb-6">
             <div className="bg-roomingkos-500 px-6 py-3 rounded-lg shadow-lg">
               <span className="text-white text-2xl font-bold tracking-wide">
-                <span className="opacity-70 font-normal text-lg mr-0.5">S</span>
                 RoomingKos
               </span>
             </div>
